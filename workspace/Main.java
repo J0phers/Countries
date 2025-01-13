@@ -4,182 +4,175 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class Main 
-{
+public class Main {
 
-  // array of 10 Country objects
+  // Array to hold 10 Country objects
   private Country[] countryArray = new Country[10];  
-  // index of current shown country
+  // Index to track the current country being displayed
   private int index = 0;
 
   // GUI elements
-  private JFrame jFrame = new JFrame("Countries");
-  private ImageIcon img;
-  private JLabel imageLabel;
-  private JLabel outputLabel;
-  private JTextField input;
+  private JFrame jFrame = new JFrame("Countries");  // The main window frame
+  private ImageIcon img;  // To hold the image icon
+  private JLabel imageLabel;  // Label to display the image
+  private JLabel outputLabel;  // Label to display the output text
+  private JTextField input;  // Text field for user input
   
   public static void main(String[] args) {
     // Create the GUI
     Main gui = new Main();
-    gui.loadCountries();
-    gui.showCountry();
+    gui.loadCountries();  // Load countries from the data file
+    gui.showCountry();  // Show the first country's details
   }
 
-  /* loadCountries() reads in the data from the countries-data.csv file and fills in the countryArray with data. You need to add the loop that reads in the country data into the array. */
-  public void loadCountries() 
-  {
-    // Open the data file - do not change
+  /* 
+   * loadCountries() reads in the data from the countries-data.csv file and fills in the countryArray with data.
+   * The data file should contain information about 10 countries (name, capital, image filename, and other data).
+   */
+  public void loadCountries() {
+    // Open the data file - ensure the file path is correct
     File file = new File("/workspaces/Countries/workspace/countries-data.csv");
     Scanner scan = null;
     try {
-      scan = new Scanner(file);
-    } catch(FileNotFoundException e) { 
-        System.out.println("File not found");     
+      scan = new Scanner(file);  // Try to read the file
+    } catch(FileNotFoundException e) {
+      System.out.println("File not found");  // Error if file is not found
     }
     
-    // Write a for loop that goes through the countryArray.
-    // for(int i ....) {
-    // Do the following inside the loop
-    
-    for (int i = 0; i < countryArray.length; i++){
-      String input = scan.nextLine();
-      String[] data = input.split(",");
-      System.out.println("Read in " + data[0]);
+    // Read data from the file and populate the countryArray
+    for (int i = 0; i < countryArray.length; i++) {
+      String input = scan.nextLine();  // Read each line of the file
+      String[] data = input.split(",");  // Split the line by commas
+      System.out.println("Read in " + data[0]);  // Print the country name being read
+      // Create a new Country object with the data read from the file
       Country c = new Country(data[0], data[1], data[2], data[3]);
+      // Store the created Country object in the array
       countryArray[i] = c;
     }
-      
-    // inside the loop, create a new Country using your constructor with 3 arguments and pass in data[0], data[1], data[2], data[3] as arguments.
-    // inside the loop, set countryArray[i] to the created Country object
-     
-    
   }
 
-  /* showCountry() will show the image associated with the current country. It should get the country at index from the countryArray. It should use its get method to get its image file name and use the code below to put the image in the GUI.
-  */
+  /* 
+   * showCountry() displays the image of the country currently at the given index in the countryArray.
+   * It updates the image in the GUI using the image file specified in the country object.
+   */
   public void showCountry() {
-    // Get the country at index from countryArray
-
+    // Get the country at the current index from the countryArray
     Country currentCountry = countryArray[index];
     
-    // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
+    // Get the image file name from the current country object
     String imagefile = currentCountry.getImageFile();
-    // Use the following code to create an new Image Icon and put it into the GUI
-    img = new ImageIcon("/workspaces/Countries/workspace/"+ imagefile);
+    // Create a new ImageIcon using the image file
+    img = new ImageIcon("/workspaces/Countries/workspace/" + imagefile);
+    // Set the image icon to the imageLabel
     imageLabel.setIcon(img);
   }
-  
-  /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
-  public void nextButtonClick()
-  {
-    index++;
 
+  /* 
+   * nextButtonClick() handles the click of the "Next" button.
+   * It increments the index to show the next country. If the index exceeds 9, it wraps around to 0.
+   * It clears the output label and calls showCountry() to update the country displayed.
+   */
+  public void nextButtonClick() {
+    index++;  // Increment the index to show the next country
+
+    // If index exceeds 9, reset it back to 0 (wrap around)
     if (index > 9) {
       index = 0;
     }
- 
-    outputLabel.setText("");
-    showCountry();
-    input.setText("");
 
+    outputLabel.setText("");  // Clear the output label
+    showCountry();  // Display the country corresponding to the new index
+    input.setText("");  // Clear the text input field
+
+    // Get the current country and set the output label to ask for the capital
     Country currentCountry = countryArray[index];
-    
     outputLabel.setText("What is the capital of " + currentCountry.getName() + "?");
-    
-
-  }
-  
-  /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
-  public void reviewButtonClick()
-  {
-     System.out.println(countryArray[index]);
-     outputLabel.setText(countryArray[index].toString());
-
   }
 
-  /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
-  */
-  public void quizButtonClick()
-  {
-    Country currentCountry = countryArray[index];
+  /* 
+   * reviewButtonClick() handles the click of the "Review" button.
+   * It prints the current country's details (using toString()) to both the console and the outputLabel.
+   */
+  public void reviewButtonClick() {
+    System.out.println(countryArray[index]);  // Print country details to the console
+    outputLabel.setText(countryArray[index].toString());  // Display the country details in the outputLabel
+  }
 
-    /*String question = "What is the capital of " + currentCountry.getName() + "?";
-    outputLabel.setText(question);
+  /* 
+   * quizButtonClick() handles the click of the "Quiz" button.
+   * It asks a quiz question based on the current country and checks if the user's answer is correct.
+   * It compares the user's input with the country's capital and provides feedback.
+   */
+  public void quizButtonClick() {
+    Country currentCountry = countryArray[index];  // Get the current country
+    String userAnswer = input.getText();  // Get the user's answer from the input field
 
-    System.out.println(question);
-    */
-
-    String userAnswer = input.getText();
-
+    // Check if the user's answer matches the country's capital (case-insensitive)
     if (userAnswer.equalsIgnoreCase(currentCountry.getCapital())) {
-      outputLabel.setText("Correct!");
-    }
-
-    else {
+      outputLabel.setText("Correct!");  // If correct, display "Correct!"
+    } else {
+      // If incorrect, display the correct answer
       outputLabel.setText("Incorrect. The correct answer is: " + currentCountry.getCapital());
     }
-
   }
 
+  /* 
+   * The Main() constructor initializes the GUI with buttons, labels, and input field.
+   * It also sets up the layout and event listeners for button clicks.
+   */
+  public Main() {
+    jFrame.setLayout(new FlowLayout());  // Set the layout of the frame to FlowLayout
+    jFrame.setSize(500, 360);  // Set the size of the frame
+    jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Exit the application when the window is closed
 
-  /* The Main() constructor is finished and will construct the GUI */
-public Main() {
-    jFrame.setLayout(new FlowLayout());
-    jFrame.setSize(500, 360);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // buttons at the top
-        JButton reviewButton = new JButton("Review");
-        JButton quizButton = new JButton("Quiz");
-        JButton newButton = new JButton("Next");
-        jFrame.add(reviewButton);
-        jFrame.add(quizButton);
-        jFrame.add(newButton);
-        
-        
-        // create a new image icon
-        img = new ImageIcon("worldmap.jpg");
-        // create a label to display image
-        imageLabel = new JLabel(img);
-        // and one for output
-        outputLabel = new JLabel();
-        jFrame.add(imageLabel);
-        jFrame.add(outputLabel);
+    // Create and add buttons for Review, Quiz, and Next actions
+    JButton reviewButton = new JButton("Review");
+    JButton quizButton = new JButton("Quiz");
+    JButton newButton = new JButton("Next");
+    jFrame.add(reviewButton);
+    jFrame.add(quizButton);
+    jFrame.add(newButton);
 
-        //add input
-        input = new JTextField(30);
-        jFrame.add(input);
+    // Create an ImageIcon for the world map (default image)
+    img = new ImageIcon("worldmap.jpg");
+    // Create a label to display the image
+    imageLabel = new JLabel(img);
+    // Create a label to display text output
+    outputLabel = new JLabel();
+    jFrame.add(imageLabel);  // Add the image label to the frame
+    jFrame.add(outputLabel);  // Add the output label to the frame
 
-        input.addKeyListener(new KeyAdapter() {
-          public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-              quizButtonClick();
-            }
-          }
+    // Create a text field for user input (e.g., for quiz answers)
+    input = new JTextField(30);
+    jFrame.add(input);  // Add the input field to the frame
 
-        });
-
-        jFrame.setVisible(true);
-        // add event listener for button click
-        reviewButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) 
-    {
-      reviewButtonClick();
-    }
-        });
-    quizButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) 
-    {
-      quizButtonClick();
-    }
+    // Add a KeyListener to trigger the quiz when the Enter key is pressed
+    input.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {  // If Enter key is pressed
+          quizButtonClick();  // Call the quizButtonClick() method
+        }
+      }
     });
-  
-   newButton.addActionListener(new ActionListener()  {
-    public void actionPerformed(ActionEvent e)  
-    {
-      nextButtonClick();
-    }
-   });
-}
+
+    jFrame.setVisible(true);  // Make the frame visible
+
+    // Add ActionListeners for the buttons to handle button clicks
+    reviewButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        reviewButtonClick();  // Call reviewButtonClick() when Review button is clicked
+      }
+    });
+    quizButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        quizButtonClick();  // Call quizButtonClick() when Quiz button is clicked
+      }
+    });
+    newButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        nextButtonClick();  // Call nextButtonClick() when Next button is clicked
+      }
+    });
+  }
 
 }
