@@ -1,3 +1,8 @@
+/*
+Author: Jophie Chan
+Date: 1/23/25
+Description: This class sets up the next, quiz, and review button of the game
+*/
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -84,7 +89,7 @@ public class Main {
     showCountry();  // Display the country corresponding to the new index
     input.setText("");  // Clear the text input field
 
-    // Get the current country and set the output label to ask for the capital
+    // Get the current country and set the output label to ask for the capital. 
     Country currentCountry = countryArray[index];
     outputLabel.setText("What is the capital of " + currentCountry.getName() + "?");
   }

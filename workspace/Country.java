@@ -1,3 +1,8 @@
+/*
+Author: Jophie Chan
+Date: 1/13/25
+Description: This class adds the private instance vars, constructors, getters, and setters. Ends with a toString()
+*/
 public class Country
 {
   // add private instance variables for the name, capital, language, and image file.
